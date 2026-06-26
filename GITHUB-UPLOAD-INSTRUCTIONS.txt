@@ -1,0 +1,17 @@
+Easy GitHub upload instructions
+
+1. Unzip this ZIP.
+2. Open the folder named dilara-afroz-khan-github-easy-upload.
+3. On GitHub, click Add file > Upload files.
+4. Drag ALL contents of this folder into GitHub:
+   - index.html
+   - style.css
+   - script.js
+   - README.md
+   - assets-guide.md
+   - assets folder
+5. Click Commit changes.
+6. Wait 1-3 minutes and refresh:
+   https://dk24169.github.io/dilara-afroz-khan/
+
+This package contains a smaller assets folder with only the image files used by the website, so GitHub should accept it more easily.

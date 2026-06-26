@@ -1,0 +1,2334 @@
+/* Editorial / newspaper-style recreation of the supplied reference. Original code, matched visual language. */
+
+:root{
+ --cream:#f5f0e8;
+ --cream-dark:#eee4d5;
+ --cream-darker:#dfcfbb;
+ --ink:#1f1c18;
+ --ink-light:#433a32;
+ --ink-faint:#6c6257;
+ --ink-ghost:#928679;
+ --rule:#6f6255;
+ --rule-light:#c6b7a5;
+ --accent-red:#8b2f2b;
+ --accent-gold:#b68b4d;
+ --glossy-gold:#d4ad67;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+ margin:0;
+ background:var(--cream);
+ color:var(--ink);
+ font-family:'Source Serif 4', serif;
+ font-size:13px;
+ line-height:1.65;
+}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+.nav-strip{
+ background:var(--ink);
+ position:sticky;
+ top:0;
+ z-index:500;
+ border-bottom:2px solid var(--accent-gold);
+}
+.nav-inner{
+ max-width:1100px;
+ margin:0 auto;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:0 20px;
+ height:38px;
+ overflow-x:auto;
+ gap:4px;
+}
+.nav-inner a{
+ color:var(--cream);
+ font-size:10px;
+ letter-spacing:2px;
+ text-transform:uppercase;
+ white-space:nowrap;
+ padding:0 10px;
+ opacity:.85;
+ border-right:1px solid rgba(255,255,255,.15);
+}
+.nav-inner a:last-child{border-right:none}
+.nav-inner a:hover{opacity:1;color:var(--glossy-gold)}
+
+.masthead{
+ max-width:1100px;
+ margin:0 auto;
+ padding:24px 20px 0;
+ border-left:1px solid var(--rule-light);
+ border-right:1px solid var(--rule-light);
+}
+.masthead-top{
+ text-align:center;
+ border-bottom:3px double var(--rule);
+ padding-bottom:10px;
+ margin-bottom:8px;
+}
+.masthead-dateline{
+ font-size:10px;
+ letter-spacing:3px;
+ color:var(--ink-faint);
+ text-transform:uppercase;
+ margin-bottom:10px;
+}
+.masthead-name{
+ font-family:'Playfair Display',serif;
+ font-size:clamp(42px,7vw,88px);
+ font-weight:900;
+ letter-spacing:-1px;
+ line-height:1;
+ text-transform:uppercase;
+}
+.masthead-rule-double{border:none;border-top:1px solid var(--rule);margin:6px 0}
+.masthead-tagline{
+ font-size:11px;
+ letter-spacing:4px;
+ color:var(--ink-light);
+ text-transform:uppercase;
+ margin:8px 0 6px;
+}
+.masthead-substrip{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ font-size:10px;
+ color:var(--ink-faint);
+ letter-spacing:1px;
+ border-top:1px solid var(--rule-light);
+ border-bottom:2px solid var(--rule);
+ padding:5px 0;
+ margin-top:6px;
+}
+.page{
+ max-width:1100px;
+ margin:0 auto;
+ padding:0 20px 40px;
+ border-left:1px solid var(--rule-light);
+ border-right:1px solid var(--rule-light);
+}
+.section-header{
+ border-top:3px solid var(--rule);
+ border-bottom:1px solid var(--rule);
+ padding:5px 0 4px;
+ margin:32px 0 18px;
+ display:flex;
+ align-items:baseline;
+ gap:16px;
+}
+.section-header.inverse{border-color:rgba(245,240,232,.35)}
+.section-title{
+ font-family:'Playfair Display',serif;
+ font-size:11px;
+ font-weight:700;
+ letter-spacing:4px;
+ text-transform:uppercase;
+}
+.section-rule{flex:1;height:1px;background:var(--rule-light)}
+.inverse .section-rule{background:rgba(245,240,232,.25)}
+.section-num{font-size:10px;color:var(--ink-ghost);letter-spacing:1px}
+
+.cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule-light)}
+.cols-2{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--rule-light)}
+.cols-4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule-light)}
+.col,.col-wide{background:var(--cream);padding:16px 18px}
+
+.about-grid{
+ display:grid;
+ grid-template-columns:220px 1fr 220px;
+ gap:1px;
+ background:var(--rule-light);
+}
+.portrait-panel{background:var(--cream-dark);min-height:280px;overflow:hidden}
+.portrait-placeholder{
+ height:100%;
+ min-height:280px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ background:linear-gradient(135deg,var(--cream-dark),var(--cream-darker));
+ color:var(--ink-faint);
+ border:1px dashed var(--rule-light);
+ gap:8px;
+}
+.portrait-mark{
+ font-family:'Playfair Display',serif;
+ font-size:58px;
+ font-weight:900;
+ color:var(--ink);
+ letter-spacing:-3px;
+}
+.img-label{
+ font-size:9px;
+ letter-spacing:2px;
+ text-transform:uppercase;
+ color:var(--ink-ghost);
+}
+.about-copy{padding:20px 24px;background:var(--cream)}
+.about-headline{
+ font-family:'Playfair Display',serif;
+ font-size:32px;
+ font-weight:900;
+ line-height:1.1;
+ margin-bottom:10px;
+}
+.about-headline em{font-style:italic;color:var(--ink-light)}
+.about-drop-cap::first-letter{
+ font-family:'Playfair Display',serif;
+ font-size:64px;
+ font-weight:900;
+ float:left;
+ line-height:.8;
+ margin-right:6px;
+ margin-top:6px;
+}
+.about-text{
+ font-size:13.5px;
+ line-height:1.7;
+ color:var(--ink-light);
+ text-align:justify;
+}
+.quick-facts-box{
+ border:1px solid var(--rule-light);
+ background:var(--cream-dark);
+}
+.quick-facts-header{
+ background:var(--ink);
+ color:var(--cream);
+ font-size:9px;
+ letter-spacing:3px;
+ text-transform:uppercase;
+ text-align:center;
+ padding:6px;
+}
+.quick-fact-item{
+ display:flex;
+ gap:8px;
+ padding:5px 12px;
+ border-bottom:1px solid var(--cream-darker);
+ font-size:11.5px;
+ color:var(--ink-light);
+ align-items:flex-start;
+}
+.qf-icon{color:var(--ink-ghost);font-size:11px;padding-top:1px}
+.social-links{
+ display:flex;
+ flex-wrap:wrap;
+ gap:6px;
+ padding:10px 12px;
+ border-top:1px solid var(--rule-light);
+}
+.social-links a{
+ font-size:10px;
+ letter-spacing:1px;
+ text-transform:uppercase;
+ color:var(--accent-red);
+ border:1px solid var(--accent-red);
+ padding:2px 7px;
+}
+.social-links a:hover{background:var(--accent-red);color:var(--cream)}
+
+.edu-card,.research-card{background:var(--cream);padding:16px 18px}
+.edu-card-header{
+ background:var(--cream-darker);
+ margin:-16px -18px 12px;
+ padding:10px 18px;
+ border-bottom:1px solid var(--rule-light);
+}
+.card-inst{
+ font-family:'Playfair Display',serif;
+ font-size:16px;
+ font-weight:700;
+ line-height:1.2;
+}
+.card-meta,.col-byline{
+ font-size:10px;
+ color:var(--ink-ghost);
+ letter-spacing:1px;
+ margin-top:2px;
+ text-transform:uppercase;
+}
+.card-degree{
+ font-family:'Playfair Display',serif;
+ font-size:14px;
+ font-weight:600;
+ margin-bottom:4px;
+}
+.card-spec{
+ font-size:12px;
+ color:var(--ink-faint);
+ font-style:italic;
+ margin-bottom:8px;
+}
+.card-tag{
+ display:inline-block;
+ background:var(--ink);
+ color:var(--cream);
+ font-size:9px;
+ letter-spacing:1.5px;
+ text-transform:uppercase;
+ padding:2px 8px;
+ margin:2px 2px 2px 0;
+}
+.card-img-real,.card-img-dual,.wide-img,.portfolio-card-img{
+ width:100%;
+ height:92px;
+ background:var(--cream-darker);
+ border:1px dashed var(--rule-light);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:10px;
+ color:var(--ink-ghost);
+ font-size:9px;
+ letter-spacing:2px;
+ text-transform:uppercase;
+ margin-top:10px;
+ overflow:hidden;
+}
+.card-img-real img,.card-img-dual img,.wide-img img,.portfolio-card-img img{
+ width:52px;
+ height:52px;
+ object-fit:contain;
+ background:#fff;
+ border:1px solid var(--rule-light);
+ padding:6px;
+}
+.card-img-real.text-mark strong,.text-only-img{
+ font-family:'Playfair Display',serif;
+ font-size:24px;
+ color:var(--ink);
+ letter-spacing:1px;
+}
+.research-card-full{
+ background:var(--cream-dark);
+ padding:18px 22px;
+ border:1px solid var(--rule-light);
+ margin-bottom:1px;
+}
+.feature-label{
+ font-size:9px;
+ letter-spacing:3px;
+ text-transform:uppercase;
+ color:var(--accent-red);
+ border-bottom:1px solid var(--accent-red);
+ display:inline-block;
+ padding-bottom:2px;
+ margin-bottom:8px;
+}
+.feature-headline{
+ font-family:'Playfair Display',serif;
+ font-size:20px;
+ font-weight:700;
+ font-style:italic;
+ line-height:1.2;
+ margin-bottom:8px;
+}
+.body-text{
+ font-size:13px;
+ color:var(--ink-light);
+ line-height:1.65;
+}
+.col-title{
+ font-family:'Playfair Display',serif;
+ font-size:17px;
+ font-weight:700;
+ margin-bottom:4px;
+ line-height:1.2;
+}
+.col-byline{
+ margin-bottom:10px;
+ padding-bottom:8px;
+ border-bottom:1px solid var(--rule-light);
+}
+
+.hire-section{
+ background:var(--ink);
+ color:var(--cream);
+ margin:38px -20px 0;
+ padding:32px 38px;
+}
+.hire-title{
+ font-family:'Playfair Display',serif;
+ font-size:48px;
+ line-height:.95;
+ font-weight:900;
+ text-align:center;
+ margin:6px 0;
+}
+.hire-subtitle{
+ text-align:center;
+ color:rgba(245,240,232,.72);
+ margin:0 auto 18px;
+ max-width:720px;
+}
+.skill-strip{
+ display:flex;
+ flex-wrap:wrap;
+ justify-content:center;
+ gap:0;
+ border-top:1px solid rgba(255,255,255,.16);
+ border-bottom:1px solid rgba(255,255,255,.16);
+ margin:18px 0;
+}
+.skill-strip span,.skill-strip strong{
+ font-size:9px;
+ letter-spacing:2px;
+ text-transform:uppercase;
+ padding:8px 12px;
+ border-right:1px solid rgba(255,255,255,.12);
+}
+.skill-strip strong{color:var(--glossy-gold)}
+.hire-matrix{
+ border:1px solid rgba(255,255,255,.18);
+ background:rgba(255,255,255,.06);
+}
+.hire-matrix-header,.hire-matrix-row{
+ display:grid;
+ grid-template-columns:2fr repeat(4,1fr);
+ border-bottom:1px solid rgba(255,255,255,.12);
+}
+.hire-matrix-header div{
+ font-size:10px;
+ letter-spacing:1.5px;
+ text-transform:uppercase;
+ color:var(--glossy-gold);
+ padding:8px;
+ text-align:center;
+ border-right:1px solid rgba(255,255,255,.1);
+}
+.hire-matrix-row div{
+ padding:8px;
+ border-right:1px solid rgba(255,255,255,.1);
+ text-align:center;
+ color:rgba(245,240,232,.85);
+}
+.hire-matrix-row div:first-child{text-align:left}
+.matrix-legend{text-align:center;font-size:11px;color:rgba(245,240,232,.55);margin:10px 0}
+.hire-quote{
+ font-family:'Playfair Display',serif;
+ font-style:italic;
+ font-size:18px;
+ text-align:center;
+ color:rgba(245,240,232,.85);
+ margin:16px auto;
+ max-width:720px;
+}
+.talk-link{
+ display:block;
+ text-align:center;
+ margin:0 auto;
+ width:max-content;
+ color:var(--glossy-gold);
+ border:1px solid var(--glossy-gold);
+ padding:5px 14px;
+ font-size:11px;
+ letter-spacing:2px;
+ text-transform:uppercase;
+}
+
+.portfolio-tabs{
+ display:flex;
+ gap:0;
+ border-bottom:2px solid var(--rule);
+}
+.tab-btn{
+ font:inherit;
+ font-size:11px;
+ letter-spacing:2px;
+ text-transform:uppercase;
+ padding:8px 20px;
+ border:none;
+ background:var(--cream-darker);
+ color:var(--ink-faint);
+ cursor:pointer;
+ border-right:1px solid var(--rule-light);
+}
+.tab-btn.active{background:var(--ink);color:var(--cream)}
+.tab-panel.active{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule-light)}
+.portfolio-card{background:var(--cream)}
+.portfolio-card-img{
+ height:130px;
+ margin-top:0;
+ border:0;
+ border-bottom:1px dashed var(--rule-light);
+}
+.portfolio-card-body{padding:14px 16px}
+.portfolio-card-title{
+ font-family:'Playfair Display',serif;
+ font-size:15px;
+ font-weight:700;
+ line-height:1.2;
+ margin-bottom:4px;
+}
+.portfolio-card-type{
+ font-size:10px;
+ color:var(--accent-red);
+ letter-spacing:1px;
+ text-transform:uppercase;
+ margin-bottom:6px;
+}
+.portfolio-card-desc{
+ font-size:12px;
+ color:var(--ink-light);
+ line-height:1.55;
+}
+.cert-platform-header{
+ background:var(--ink);
+ color:var(--cream);
+ font-size:9px;
+ letter-spacing:3px;
+ text-transform:uppercase;
+ padding:6px 16px;
+ border-bottom:1px solid var(--accent-gold);
+ margin:-16px -18px 12px;
+}
+.award-row{
+ display:grid;
+ grid-template-columns:28px 1fr;
+ gap:8px;
+ border-bottom:1px dotted var(--cream-darker);
+ padding:8px 0;
+}
+.award-row span{color:var(--accent-red)}
+.award-row strong{
+ font-family:'Playfair Display',serif;
+ font-size:13px;
+}
+.award-row p{margin:2px 0 0;color:var(--ink-ghost);font-size:11px}
+.skill-group-title{
+ font-family:'Playfair Display',serif;
+ font-size:14px;
+ font-weight:700;
+ margin-bottom:8px;
+ padding-bottom:4px;
+ border-bottom:1px solid var(--rule-light);
+}
+.skill-item{
+ font-size:12.5px;
+ color:var(--ink-light);
+ padding:3px 0;
+ border-bottom:1px dotted var(--cream-darker);
+}
+.ornament{text-align:center;color:var(--ink-ghost);font-size:18px;margin:8px 0;letter-spacing:8px}
+.closing-quote{
+ text-align:center;
+ font-family:'Playfair Display',serif;
+ font-style:italic;
+ font-size:19px;
+ color:var(--ink-light);
+ margin:14px auto;
+}
+.footer-panel{
+ background:var(--ink);
+ color:var(--cream);
+ margin:0 -20px -40px;
+ padding:32px 20px;
+ text-align:center;
+}
+.footer-title{
+ font-family:'Playfair Display',serif;
+ font-size:34px;
+ font-weight:900;
+ text-transform:uppercase;
+}
+.footer-subtitle{color:rgba(245,240,232,.65);margin-bottom:14px}
+.footer-contacts{
+ display:flex;
+ flex-wrap:wrap;
+ justify-content:center;
+ gap:16px;
+ color:rgba(245,240,232,.72);
+ font-size:12px;
+}
+.footer-copy{
+ color:rgba(245,240,232,.35);
+ font-size:10px;
+ letter-spacing:1px;
+ margin-top:16px;
+}
+
+@media(max-width:800px){
+ .masthead-substrip{flex-direction:column;align-items:center;text-align:center}
+ .about-grid,.cols-3,.cols-4,.cols-2,.tab-panel.active{grid-template-columns:1fr}
+ .hire-matrix-header,.hire-matrix-row{grid-template-columns:1fr 1fr}
+ .hire-matrix-header div:not(:first-child):not(:nth-child(2)),.hire-matrix-row div:not(:first-child):not(:nth-child(2)){display:none}
+ .hire-section{padding:32px 20px}
+}
+
+/* Campus / organisation image upgrade */
+.card-img-real.photo,
+.wide-img.photo,
+.portfolio-card-img.photo {
+ position: relative;
+ height: 142px;
+ padding: 0;
+ margin-top: 10px;
+ border: 1px solid var(--rule-light);
+ background: var(--cream-darker);
+ overflow: hidden;
+ display: block;
+}
+
+.wide-img.photo {
+ height: 170px;
+}
+
+.portfolio-card-img.photo {
+ height: 150px;
+ margin-top: 0;
+}
+
+.card-img-real.photo img,
+.wide-img.photo img,
+.portfolio-card-img.photo img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ padding: 0;
+ border: 0;
+ background: none;
+ filter: saturate(.92) contrast(.98);
+}
+
+.card-img-real.photo span,
+.wide-img.photo span,
+.portfolio-card-img.photo span {
+ position: absolute;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ padding: 6px 8px;
+ background: rgba(31, 28, 24, .82);
+ color: var(--cream);
+ font-size: 9px;
+ letter-spacing: 2px;
+ text-transform: uppercase;
+ text-align: center;
+}
+
+.portrait-art {
+ background:
+  radial-gradient(circle at top left, rgba(255,255,255,.55), transparent 28%),
+  linear-gradient(135deg, #e6d1bc 0%, #c29a77 48%, #7a332d 100%);
+}
+
+.portrait-sub {
+ max-width: 150px;
+ color: var(--cream);
+ font-size: 10px;
+ line-height: 1.35;
+ letter-spacing: 1px;
+ text-align: center;
+ opacity: .85;
+}
+
+/* Custom flow diagrams inspired by the reference site's visual storytelling blocks */
+.diagram-card {
+ background: var(--cream);
+ border: 1px solid var(--rule-light);
+ margin-bottom: 1px;
+ padding: 0;
+ overflow: hidden;
+}
+.diagram-card img {
+ width: 100%;
+ height: auto;
+ display: block;
+}
+.diagram-card.second {
+ margin-top: 1px;
+}
+
+/* Make image panels feel more like project visuals than empty logo placeholders */
+.card-img-dual,
+.card-img-real:not(.photo),
+.wide-img:not(.photo),
+.portfolio-card-img:not(.photo) {
+ background:
+  radial-gradient(circle at 18% 18%, rgba(255,255,255,.7), transparent 34%),
+  linear-gradient(135deg, #eee0cf, #d8bf9f 52%, #8b2f2b);
+}
+
+/* Correction pass: real landscape images + visible logo panels */
+.card-img-real.brand-card,
+.portfolio-card-img.brand-card {
+ background: var(--cream);
+ border: 1px solid var(--rule-light);
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ padding: 12px;
+ min-height: 118px;
+}
+
+.card-img-real.brand-card.dark {
+ background: #1f1c18;
+}
+
+.card-img-real.brand-card img,
+.portfolio-card-img.brand-card img {
+ width: 100%;
+ height: 100%;
+ max-height: 96px;
+ object-fit: contain;
+ background: transparent;
+ border: 0;
+ padding: 0;
+}
+
+.card-img-real.brand-card span {
+ position: absolute;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ padding: 5px 8px;
+ background: rgba(31,28,24,.82);
+ color: var(--cream);
+ font-size: 9px;
+ letter-spacing: 2px;
+ text-transform: uppercase;
+ text-align: center;
+}
+
+.card-img-real.photo img,
+.wide-img.photo img,
+.portfolio-card-img.photo img {
+ object-position: center center;
+}
+
+/* Final requested revisions */
+.portfolio-card-img.photo span {
+ position:absolute;
+ left:0; right:0; bottom:0;
+ background:rgba(31,28,24,.82);
+ color:#fffaf2;
+ font-size:9px;
+ letter-spacing:2px;
+ text-transform:uppercase;
+ text-align:center;
+ padding:6px 8px;
+}
+
+/* Requested final-pass refinements */
+.portrait-image{
+ padding:0;
+ overflow:hidden;
+}
+.portrait-image img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ display:block;
+}
+.paired-logos img[src$="uol-landscape-panel.svg"]{
+ width:130px;
+ height:94px;
+ object-fit:cover;
+ padding:0;
+}
+.paired-logos img[src$="nsu-logo-panel.svg"]{
+ object-fit:contain;
+}
+.card-img-real.brand-card,
+.portfolio-card-img.brand-card{
+ position:relative;
+ min-height:135px;
+}
+.card-img-real.brand-card img,
+.portfolio-card-img.brand-card img{
+ max-height:112px;
+}
+
+/* Round-2 user fixes: remove remaining blank-looking panels and use visual institutional cards */
+.card-img-dual.photo-pair,
+.portfolio-card-img.photo-pair{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:1px;
+ background:var(--rule-light);
+ height:118px;
+ border:1px solid var(--rule-light);
+ margin-top:10px;
+ overflow:hidden;
+}
+.portfolio-card-img.photo-pair{
+ height:148px;
+ margin-top:0;
+}
+.card-img-dual.photo-pair img,
+.portfolio-card-img.photo-pair img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ background:var(--cream);
+ border:0;
+ padding:0;
+}
+.card-img-real.photo,
+.portfolio-card-img.photo{
+ position:relative;
+}
+.card-img-real.photo span,
+.portfolio-card-img.photo span{
+ position:absolute;
+ left:0; right:0; bottom:0;
+ background:rgba(31,28,24,.82);
+ color:var(--cream);
+ font-size:9px;
+ letter-spacing:2px;
+ text-transform:uppercase;
+ text-align:center;
+ padding:6px 8px;
+}
+
+/* Real-image round 3 polish */
+.card-img-dual.photo-pair,
+.portfolio-card-img.photo-pair{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:1px;
+ background:var(--rule-light);
+}
+.card-img-dual.photo-pair img,
+.portfolio-card-img.photo-pair img,
+.card-img-real.photo img,
+.portfolio-card-img.photo img{
+ object-fit:cover;
+}
+.card-img-real.brand-card img,
+.portfolio-card-img.brand-card img{
+ object-fit:contain;
+}
+
+/* Official-assets pass */
+.hero-portrait{display:none !important;}
+.hero-grid{grid-template-columns:1fr !important;}
+.card-img-real.brand-card img,
+.portfolio-card-img.brand-card img{
+ object-fit:contain;
+ background:#fffaf2;
+}
+
+.hero-grid{grid-template-columns:1fr !important;}
+.hero-portrait{display:none !important;}
+
+/* Final cleanup: campus/institution images */
+.card-img-real.photo img,
+.wide-img.photo img,
+.portfolio-card-img.photo img,
+.card-img-dual.photo-pair img,
+.portfolio-card-img.photo-pair img {
+ object-fit: cover;
+ object-position: center;
+}
+
+.card-img-real.brand-card,
+.portfolio-card-img.brand-card {
+ background: #fffaf2;
+}
+
+.card-img-real.brand-card img,
+.portfolio-card-img.brand-card img {
+ object-fit: contain;
+ background: #fff;
+ padding: 8px;
+}
+
+/* Final text and portfolio fixes */
+.personal-portfolio-box{background:var(--cream-dark);border:1px solid var(--rule-light);padding:18px 22px;margin:-4px 0 18px}
+.personal-portfolio-box .portfolio-kicker{color:var(--accent-red);font-size:9px;letter-spacing:3px;text-transform:uppercase;font-weight:700;border-bottom:1px solid var(--accent-red);display:inline-block;padding-bottom:2px;margin-bottom:8px}
+.personal-portfolio-box h3{font-family:'Playfair Display',serif;margin:4px 0 8px;font-size:24px;line-height:1.15}
+.personal-portfolio-box p{color:var(--ink-light);font-size:13px;max-width:900px}
+.portfolio-focus-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.portfolio-focus-grid span{background:var(--ink);color:var(--cream);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 8px}
+
+/* V11: make the journey diagram proportionate to the page */
+#journey-flow .diagram-card {
+ max-width: 980px;
+ margin: 0 auto 1px;
+}
+
+#journey-flow .diagram-card img {
+ width: 100%;
+ max-height: 420px;
+ object-fit: contain;
+}
+
+/* V15: keep academic recognition panel fully visible in its education card */
+.edu-card img[src$="academic-recognitions-panel.svg"] {
+ object-fit: contain;
+ background: #fffaf2;
+}
+
+/* V18: triple image row for IBA / BRAC Business School / Coventry */
+.card-img-triple{
+ width:100%;
+ height:92px;
+ background:var(--cream-darker);
+ border:1px dashed var(--rule-light);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:8px;
+ margin-top:10px;
+ overflow:hidden;
+}
+.card-img-triple img{
+ flex:1 1 0;
+ width:33.33%;
+ height:100%;
+ object-fit:cover;
+ background:var(--cream);
+ border:0;
+ padding:0;
+}
+
+/* V20: authentic institution images row */
+.card-img-triple{
+ width:100%;
+ height:118px;
+ background:var(--cream-darker);
+ border:1px solid var(--rule-light);
+ display:grid;
+ grid-template-columns:1fr 1fr 1fr;
+ gap:1px;
+ margin-top:10px;
+ overflow:hidden;
+}
+.card-img-triple img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ background:var(--cream);
+ border:0;
+ padding:0;
+}
+
+/* V21: meaningful institution crops */
+.card-img-dual.photo-pair,
+.card-img-triple{
+ height:150px;
+}
+.card-img-dual.photo-pair img,
+.card-img-triple img{
+ object-fit:contain;
+ background:#f5efe6;
+}
+
+/* V22: use the empty space under institution images for institute names */
+.captioned-institutions{
+ width:100%;
+ height:175px;
+ margin-top:10px;
+ background:#f5efe6;
+ border:1px solid var(--rule-light);
+ display:grid;
+ gap:1px;
+ overflow:hidden;
+}
+.card-img-dual.captioned-institutions{
+ grid-template-columns:1fr 1fr;
+}
+.card-img-triple.captioned-institutions{
+ grid-template-columns:1fr 1fr 1fr;
+}
+.inst-figure{
+ margin:0;
+ min-width:0;
+ display:grid;
+ grid-template-rows:1fr 30px;
+ background:#fffaf2;
+ overflow:hidden;
+}
+.inst-figure img{
+ width:100%;
+ height:100%;
+ object-fit:contain;
+ background:#f5efe6;
+ border:0;
+ padding:0;
+}
+.inst-figure figcaption{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:4px 6px;
+ background:rgba(31,28,24,.86);
+ color:#fffaf2;
+ font-size:9px;
+ line-height:1.15;
+ letter-spacing:1.2px;
+ text-transform:uppercase;
+ text-align:center;
+}
+
+/* V23: aligned institute-name boxes with guaranteed visible captions */
+.institution-strip{
+ width:100%;
+ height:176px;
+ margin-top:10px;
+ display:grid;
+ gap:1px;
+ background:var(--rule-light);
+ border:1px solid var(--rule-light);
+ overflow:hidden;
+}
+.institution-strip.caption-2{ grid-template-columns:1fr 1fr; }
+.institution-strip.caption-3{ grid-template-columns:1fr 1fr 1fr; }
+
+.institution-strip .inst-figure{
+ margin:0;
+ min-width:0;
+ height:100%;
+ display:grid;
+ grid-template-rows:minmax(0, 1fr) 34px;
+ background:#f5efe6;
+ overflow:hidden;
+}
+.institution-strip .inst-figure img{
+ width:100% !important;
+ height:100% !important;
+ min-height:0;
+ object-fit:contain !important;
+ background:#f5efe6 !important;
+ border:0 !important;
+ padding:0 !important;
+ display:block;
+}
+.institution-strip .inst-figure figcaption{
+ height:34px;
+ min-height:34px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ box-sizing:border-box;
+ padding:4px 6px;
+ background:rgba(31,28,24,.88);
+ color:#fffaf2;
+ font-size:9px;
+ line-height:1.1;
+ letter-spacing:1.1px;
+ text-transform:uppercase;
+ text-align:center;
+ overflow:hidden;
+}
+
+/* V24: align the bottom name boxes across Teaching & Academic Leadership cards */
+#teaching .research-card{
+ display:flex;
+ flex-direction:column;
+}
+
+#teaching .institution-strip,
+#teaching .card-img-real.photo,
+#teaching .card-img-dual.photo-pair,
+#teaching .card-img-triple{
+ margin-top:auto;
+}
+
+/* Keep every institution strip at the same height so caption bars line up */
+#teaching .institution-strip{
+ height:180px;
+}
+
+#teaching .institution-strip .inst-figure{
+ grid-template-rows:minmax(0, 1fr) 36px;
+}
+
+#teaching .institution-strip .inst-figure figcaption{
+ height:36px;
+ min-height:36px;
+}
+
+/* V25: align Education section image/name boxes at the same bottom level */
+#education .cols-3{
+ align-items:stretch;
+}
+
+#education .edu-card{
+ display:flex;
+ flex-direction:column;
+ height:100%;
+}
+
+#education .card-img-real.photo{
+ margin-top:auto;
+ height:178px;
+ display:block;
+ position:relative;
+ overflow:hidden;
+ background:#f5efe6;
+ border:1px solid var(--rule-light);
+}
+
+#education .card-img-real.photo img{
+ width:100% !important;
+ height:100% !important;
+ object-fit:contain !important;
+ background:#f5efe6 !important;
+ border:0 !important;
+ padding:0 !important;
+ display:block;
+}
+
+#education .card-img-real.photo span{
+ height:34px;
+ min-height:34px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ box-sizing:border-box;
+ padding:4px 6px;
+ background:rgba(31,28,24,.88);
+ color:#fffaf2;
+ font-size:9px;
+ line-height:1.1;
+ letter-spacing:1.2px;
+ text-transform:uppercase;
+ text-align:center;
+}
+
+/* Recognition panel needs the same bottom caption level as the campus-image cards */
+#education .edu-card img[src$="academic-recognitions-panel.svg"]{
+ object-fit:contain !important;
+ background:#fffaf2 !important;
+}
+
+/* V26: improve clarity of research-section images */
+#research .wide-img.photo{
+ height: 210px;
+}
+#research .card-img-real.photo,
+#research .card-img-real.brand-card{
+ height: 175px;
+}
+#research .wide-img.photo img,
+#research .card-img-real.photo img{
+ object-fit: cover;
+ image-rendering: auto;
+}
+#research .card-img-real.brand-card{
+ background:#fffaf2;
+}
+#research .card-img-real.brand-card img{
+ object-fit: contain;
+ padding: 10px 12px 36px;
+ background:#fffaf2;
+}
+
+/* V27: clear research visuals + aligned bottom name boxes */
+#research .cols-2{
+ align-items:stretch;
+}
+
+#research .research-card{
+ display:flex;
+ flex-direction:column;
+ height:100%;
+}
+
+#research .wide-img.photo{
+ height:230px;
+ display:block;
+ position:relative;
+ overflow:hidden;
+ background:#f5efe6;
+ border:1px solid var(--rule-light);
+}
+
+#research .wide-img.photo img{
+ width:100% !important;
+ height:100% !important;
+ object-fit:cover !important;
+ object-position:center center !important;
+ display:block;
+ background:#f5efe6;
+}
+
+#research .card-img-real.photo,
+#research .card-img-real.brand-card{
+ margin-top:auto;
+ height:218px;
+ display:block;
+ position:relative;
+ overflow:hidden;
+ background:#f5efe6;
+ border:1px solid var(--rule-light);
+}
+
+#research .card-img-real.photo img{
+ width:100% !important;
+ height:100% !important;
+ object-fit:cover !important;
+ object-position:center center !important;
+ display:block;
+ background:#f5efe6;
+}
+
+#research .card-img-real.brand-card img{
+ width:100% !important;
+ height:100% !important;
+ object-fit:contain !important;
+ object-position:center center !important;
+ display:block;
+ background:#fffaf2 !important;
+ padding:12px 14px 42px !important;
+ box-sizing:border-box;
+}
+
+#research .card-img-real.photo span,
+#research .card-img-real.brand-card span,
+#research .wide-img.photo span{
+ position:absolute;
+ left:0;
+ right:0;
+ bottom:0;
+ height:34px;
+ min-height:34px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ box-sizing:border-box;
+ background:rgba(31,28,24,.86);
+ color:#fffaf2;
+ font-size:9px;
+ letter-spacing:2px;
+ text-transform:uppercase;
+ text-align:center;
+ padding:4px 8px;
+}
+
+/* V28: Social Impact Organizations separated from entrepreneurship */
+.section-intro{
+ background:var(--cream);
+ border-left:1px solid var(--rule-light);
+ border-right:1px solid var(--rule-light);
+ margin:0;
+ padding:12px 20px;
+ font-size:13.5px;
+ line-height:1.6;
+ color:var(--ink-light);
+}
+#social-impact-organizations .edu-card{
+ display:flex;
+ flex-direction:column;
+}
+#social-impact-organizations .card-img-real{
+ margin-top:auto;
+}
+
+/* V29: entrepreneurship section includes all venture entities and local logo assets */
+#entrepreneurship .ventures-grid{
+ align-items:stretch;
+}
+#entrepreneurship .edu-card{
+ display:flex;
+ flex-direction:column;
+ height:100%;
+}
+#entrepreneurship .card-img-real.brand-card{
+ margin-top:auto;
+ background:#fffaf2;
+}
+#entrepreneurship .card-img-real.brand-card img{
+ width:100%;
+ height:100%;
+ object-fit:contain;
+ object-position:center center;
+ padding:10px 12px 34px;
+ box-sizing:border-box;
+ background:#fffaf2;
+}
+
+/* V30: Entrepreneurship section simplified to 3 venture entities with user-provided logos */
+#entrepreneurship .ventures-grid{
+ align-items:stretch;
+}
+#entrepreneurship .edu-card{
+ display:flex;
+ flex-direction:column;
+ height:100%;
+}
+#entrepreneurship .card-img-real.brand-card{
+ margin-top:auto;
+ height:168px;
+ background:#fffaf2;
+ border:1px solid var(--rule-light);
+ overflow:hidden;
+ position:relative;
+}
+#entrepreneurship .card-img-real.brand-card img{
+ width:100% !important;
+ height:100% !important;
+ object-fit:contain !important;
+ object-position:center center !important;
+ padding:16px 16px 40px !important;
+ box-sizing:border-box;
+ background:#fffaf2 !important;
+ display:block;
+}
+#entrepreneurship .card-img-real.brand-card span{
+ position:absolute;
+ left:0;
+ right:0;
+ bottom:0;
+ height:32px;
+ min-height:32px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:rgba(31,28,24,.86);
+ color:#fffaf2;
+ font-size:9px;
+ letter-spacing:1.8px;
+ text-transform:uppercase;
+ text-align:center;
+ padding:4px 8px;
+}
+
+/* V31: social impact logos and recognition box */
+#social-impact-organizations .cols-3{
+ align-items:stretch;
+}
+#social-impact-organizations .edu-card{
+ display:flex;
+ flex-direction:column;
+ height:100%;
+}
+#social-impact-organizations .card-img-real{
+ margin-top:auto;
+ height:168px;
+ overflow:hidden;
+ position:relative;
+}
+#social-impact-organizations .card-img-real img{
+ width:100% !important;
+ height:100% !important;
+ object-fit:contain !important;
+ object-position:center center !important;
+ padding:10px 12px 36px !important;
+ box-sizing:border-box;
+ background:#fffaf2 !important;
+ display:block;
+}
+#social-impact-organizations .card-img-real span{
+ position:absolute;
+ left:0;
+ right:0;
+ bottom:0;
+ height:32px;
+ min-height:32px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:rgba(31,28,24,.86);
+ color:#fffaf2;
+ font-size:9px;
+ letter-spacing:1.6px;
+ text-transform:uppercase;
+ text-align:center;
+ padding:4px 8px;
+}
+
+/* V32: Social Impact section image updates, recognition panel, and box alignment */
+#social-impact-organizations .cols-3{
+ align-items:stretch;
+}
+
+#social-impact-organizations .edu-card{
+ display:flex;
+ flex-direction:column;
+ height:100%;
+}
+
+#social-impact-organizations .edu-card .edu-card-header{
+ min-height:78px;
+}
+
+#social-impact-organizations .body-text,
+#social-impact-organizations .card-degree,
+#social-impact-organizations .card-spec{
+ min-height:82px;
+}
+
+#social-impact-organizations .card-img-real{
+ margin-top:auto;
+ height:210px;
+ min-height:210px;
+ overflow:hidden;
+ position:relative;
+ border:1px solid var(--rule-light);
+ background:#fffaf2;
+}
+
+#social-impact-organizations .card-img-real img{
+ width:100% !important;
+ height:100% !important;
+ object-fit:contain !important;
+ object-position:center center !important;
+ padding:12px 14px 40px !important;
+ box-sizing:border-box;
+ background:#fffaf2 !important;
+ display:block;
+}
+
+#social-impact-organizations .card-img-real span{
+ position:absolute;
+ left:0;
+ right:0;
+ bottom:0;
+ height:40px;
+ min-height:40px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:rgba(31,28,24,.86);
+ color:#fffaf2;
+ font-size:10px;
+ letter-spacing:1.8px;
+ text-transform:uppercase;
+ text-align:center;
+ padding:4px 8px;
+ box-sizing:border-box;
+}
+
+/* V33: profile photo */
+#about .portrait-image img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ object-position:center top;
+ display:block;
+}
+
+/* V34: make logo images large and clearly visible within their boxes */
+#social-impact-organizations .card-img-real,
+#entrepreneurship .card-img-real.logo-large-box{
+ height: 220px;
+ min-height: 220px;
+}
+
+#social-impact-organizations .card-img-real img{
+ padding: 6px 8px 42px !important;
+ object-fit: contain !important;
+ object-position: center center !important;
+}
+
+#entrepreneurship .card-img-real.logo-large-box img{
+ padding: 8px 10px 38px !important;
+ object-fit: contain !important;
+ object-position: center center !important;
+}
+
+/* Give particularly logo-based social cards a little more visual scale */
+#social-impact-organizations .card-img-real{
+ background: #fffaf2;
+}
+
+#social-impact-organizations .card-img-real span,
+#entrepreneurship .card-img-real.logo-large-box span{
+ height: 38px;
+ min-height: 38px;
+}
+
+/* V35: enlarge key Social Impact logos further */
+#social-impact-organizations .card-img-real.logo-ethics-large img,
+#social-impact-organizations .card-img-real.logo-scholars-large img,
+#social-impact-organizations .card-img-real.logo-nrb-large img,
+#social-impact-organizations .card-img-real.logo-udichi-large img{
+ transform-origin:center center;
+}
+
+/* Ethics Club Bangladesh */
+#social-impact-organizations .card-img-real.logo-ethics-large{
+ height:240px;
+ min-height:240px;
+}
+#social-impact-organizations .card-img-real.logo-ethics-large img{
+ padding:2px 4px 42px !important;
+ transform:scale(1.65);
+}
+
+/* Scholars Bangladesh Society */
+#social-impact-organizations .card-img-real.logo-scholars-large{
+ height:240px;
+ min-height:240px;
+}
+#social-impact-organizations .card-img-real.logo-scholars-large img{
+ padding:2px 4px 42px !important;
+ transform:scale(1.55);
+}
+
+/* Center of NRB Foundation */
+#social-impact-organizations .card-img-real.logo-nrb-large{
+ height:240px;
+ min-height:240px;
+}
+#social-impact-organizations .card-img-real.logo-nrb-large img{
+ padding:2px 4px 42px !important;
+ transform:scale(1.45);
+}
+
+/* Udichi */
+#social-impact-organizations .card-img-real.logo-udichi-large{
+ height:240px;
+ min-height:240px;
+}
+#social-impact-organizations .card-img-real.logo-udichi-large img{
+ padding:2px 4px 42px !important;
+ transform:scale(1.7);
+}
+
+/* V36: portfolio image replacements from user-provided references */
+#portfolio .portfolio-card img{
+ object-fit: cover;
+ object-position: center center;
+}
+
+#portfolio .portfolio-card-title{
+ min-height: 2.2em;
+}
+
+#portfolio .portfolio-card img[alt*="logo"],
+#portfolio .portfolio-card img[alt*="Society"],
+#portfolio .portfolio-card img[alt*="Training"]{
+ object-fit: contain;
+ background:#fffaf2;
+ padding: 14px;
+}
+
+/* V37: portfolio updates for Ethics Club, ULaw, NRB Jobs, and NRB Bazaar */
+#portfolio .portfolio-card-img.brand-card img,
+#portfolio .portfolio-card img[alt*="logo"],
+#portfolio .portfolio-card img[alt*="Bangladesh image"]{
+ object-fit: contain !important;
+ background:#fffaf2;
+ padding: 12px !important;
+}
+
+#portfolio .photo-pair img{
+ object-fit: cover !important;
+ object-position: center center !important;
+}
+
+/* V38: selected profile photo */
+#about .portrait-image img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ object-position:center top;
+ display:block;
+}
+
+/* V39: recommended profile image plus secondary cultural-leadership visual */
+#about .portrait-image img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ object-position:center top;
+ display:block;
+}
+
+.cultural-leadership-note{
+ margin-top:14px;
+ border:1px solid var(--rule-light);
+ background:var(--cream-dark);
+ display:grid;
+ grid-template-columns:1fr 118px;
+ gap:1px;
+ align-items:stretch;
+ overflow:hidden;
+}
+
+.culture-note-copy{
+ padding:12px 14px;
+}
+
+.culture-note-kicker{
+ display:block;
+ font-size:9px;
+ letter-spacing:2px;
+ text-transform:uppercase;
+ color:var(--accent-red);
+ margin-bottom:6px;
+}
+
+.cultural-leadership-note p{
+ margin:0;
+ font-size:12px;
+ line-height:1.55;
+ color:var(--ink-light);
+}
+
+.cultural-leadership-note img{
+ width:118px;
+ height:100%;
+ min-height:118px;
+ object-fit:cover;
+ object-position:center top;
+ display:block;
+}
+
+/* V40: stronger justification text for Personal Journey & Cultural Leadership note */
+.cultural-leadership-note{
+ grid-template-columns:1fr 132px;
+}
+.cultural-leadership-note p{
+ font-size:12.5px;
+ line-height:1.65;
+}
+.cultural-leadership-note img{
+ width:132px;
+}
+
+/* V41: cultural leadership song link */
+.culture-song-link{
+ display:inline-block;
+ margin-top:8px;
+ font-size:10px;
+ letter-spacing:1.8px;
+ text-transform:uppercase;
+ color:var(--accent-red);
+ border-bottom:1px solid var(--accent-red);
+ text-decoration:none;
+ padding-bottom:2px;
+}
+.culture-song-link:hover{
+ color:var(--ink);
+ border-bottom-color:var(--ink);
+}
+
+/* V55: NRB Jobs description should not appear italic */
+#portfolio .portfolio-card-desc,
+#entrepreneurship .card-desc,
+#entrepreneurship p,
+.portfolio-card-desc{
+ font-style: normal !important;
+}
+
+/* V56: NRB Bazaar description should not appear italic */
+#portfolio .portfolio-card-desc,
+#entrepreneurship .card-desc,
+#entrepreneurship p,
+.portfolio-card-desc{
+ font-style: normal !important;
+}
+
+/* V58: remove italic styling from requested sections/content */
+#education,
+#education *,
+#research,
+#research *,
+#entrepreneurship,
+#entrepreneurship *,
+#certificates,
+#certificates *,
+#education .card-desc,
+#education .card-meta,
+#education .card-role,
+#research .card-desc,
+#research .card-meta,
+#research .card-role,
+#entrepreneurship .card-desc,
+#entrepreneurship .card-meta,
+#entrepreneurship .card-role,
+#certificates .card-desc,
+#certificates .card-meta,
+#certificates .card-role{
+ font-style: normal !important;
+}
+
+/* Specific requested text areas */
+#research *:contains("EdTech Entrepreneurship Strategy"),
+#research *:contains("Digital Learning & Entrepreneurship Strategy"){
+ font-style: normal !important;
+}
+
+/* V62: keep the About role/tagline compact on one line where screen width allows */
+#about .profile-role{
+ white-space: nowrap;
+ font-size: clamp(14px, 1.35vw, 18px);
+}
+@media (max-width: 900px){
+ #about .profile-role{
+  white-space: normal;
+ }
+}
+
+/* V67: separate Platforms and Interests; add polished writing interests */
+.platform-interest-grid{
+ display:grid;
+ grid-template-columns:repeat(2, minmax(0, 1fr));
+ gap:18px;
+ margin-top:22px;
+}
+
+.platform-interest-card{
+ border:1px solid var(--rule-light);
+ background:var(--cream);
+ padding:18px;
+}
+
+.platform-interest-card h3{
+ margin:0 0 12px;
+ font-family:'Playfair Display', serif;
+ font-size:20px;
+ color:var(--ink);
+}
+
+.platform-interest-card .skill-tags{
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+}
+
+.platform-interest-card .skill-tags span{
+ font-style:normal !important;
+}
+
+@media (max-width: 800px){
+ .platform-interest-grid{
+  grid-template-columns:1fr;
+ }
+}
+
+/* V68: ensure Proclamation & Certification Awards recognition text is not italic */
+#certificates,
+#certificates *,
+#certificates .card-desc,
+#certificates p{
+ font-style: normal !important;
+}
+
+/* V70: removed unwanted platform/interest section */
+.platform-interest-grid{
+ display:none !important;
+}
+
+/* V71: Platforms displayed as one sentence with full stops */
+.platforms-line-block{
+ margin-top:22px;
+ border:1px solid var(--rule-light);
+ background:var(--cream);
+ padding:18px;
+}
+
+.platforms-line-block h3{
+ margin:0 0 10px;
+ font-family:'Playfair Display', serif;
+ font-size:20px;
+ color:var(--ink);
+ font-style:normal !important;
+}
+
+.platforms-line-block p{
+ margin:0;
+ font-style:normal !important;
+ font-size:13px;
+ line-height:1.7;
+ color:var(--ink-light);
+}
+
+/* V72: Interests displayed as one sentence with full stops */
+.interests-line-block{
+ margin-top:16px;
+ border:1px solid var(--rule-light);
+ background:var(--cream);
+ padding:18px;
+}
+
+.interests-line-block h3{
+ margin:0 0 10px;
+ font-family:'Playfair Display', serif;
+ font-size:20px;
+ color:var(--ink);
+ font-style:normal !important;
+}
+
+.interests-line-block p{
+ margin:0;
+ font-style:normal !important;
+ font-size:13px;
+ line-height:1.7;
+ color:var(--ink-light);
+}
+
+/* V73: ethics tagline should not appear italic */
+#why-hire-me,
+#why-hire-me *,
+#portfolio,
+#portfolio *,
+.tagline,
+.pull-quote{
+ font-style: normal !important;
+}
+
+/* V74: make Journey & Impact Flow infinity image smaller and less overpowering */
+#journey-flow.journey-flow-compact{
+ padding-top:48px;
+ padding-bottom:54px;
+}
+
+#journey-flow.journey-flow-compact .journey-flow-wrap,
+#journey-flow.journey-flow-compact .infinity-wrap,
+#journey-flow.journey-flow-compact .infinity-diagram,
+#journey-flow.journey-flow-compact .flow-diagram{
+ max-width:760px !important;
+ margin-left:auto !important;
+ margin-right:auto !important;
+}
+
+#journey-flow.journey-flow-compact svg,
+#journey-flow.journey-flow-compact img{
+ max-width:760px !important;
+ width:82% !important;
+ height:auto !important;
+ display:block;
+ margin:0 auto !important;
+}
+
+#journey-flow.journey-flow-compact .infinity-card,
+#journey-flow.journey-flow-compact .flow-card,
+#journey-flow.journey-flow-compact .journey-node{
+ transform:scale(.88);
+}
+
+@media (max-width:900px){
+ #journey-flow.journey-flow-compact svg,
+ #journey-flow.journey-flow-compact img{
+  width:100% !important;
+  max-width:100% !important;
+ }
+ #journey-flow.journey-flow-compact .infinity-card,
+ #journey-flow.journey-flow-compact .flow-card,
+ #journey-flow.journey-flow-compact .journey-node{
+  transform:none;
+ }
+}
+
+/* V75: CTA line and Let's Talk button should not appear italic */
+#contact,
+#contact *,
+.cta,
+.cta *,
+.cta-line,
+.cta-copy,
+.contact-cta,
+.contact-cta *,
+a[href="#contact"],
+button,
+.btn{
+ font-style: normal !important;
+}
+
+/* V78: fill Skills & Languages empty box with languages */
+.languages-line-block{
+ margin-top:16px;
+ border:1px solid var(--rule-light);
+ background:var(--cream);
+ padding:18px;
+}
+
+.languages-line-block h3{
+ margin:0 0 10px;
+ font-family:'Playfair Display', serif;
+ font-size:20px;
+ color:var(--ink);
+ font-style:normal !important;
+}
+
+.languages-line-block p{
+ margin:0;
+ font-style:normal !important;
+ font-size:13px;
+ line-height:1.7;
+ color:var(--ink-light);
+}
+
+/* V79: keep educator/researcher/ethics tagline non-italic */
+#why-hire-me .pull-quote,
+#why-hire-me .pull-quote *,
+#why-hire-me blockquote,
+#why-hire-me blockquote *,
+#why-hire-me .quote,
+#why-hire-me .quote *{
+ font-style: normal !important;
+}
+
+/* V80: clean contact identity block */
+.contact-identity-card{
+ border:1px solid var(--rule-light);
+ background:var(--cream);
+ padding:22px;
+ margin:0 0 24px;
+ font-style:normal !important;
+}
+
+.contact-identity-card h3{
+ margin:0 0 8px;
+ font-family:'Playfair Display', serif;
+ font-size:26px;
+ color:var(--ink);
+ font-style:normal !important;
+}
+
+.contact-identity-card p,
+.contact-identity-card a{
+ font-style:normal !important;
+}
+
+.contact-focus-line{
+ margin:0 0 14px;
+ letter-spacing:1.2px;
+ text-transform:uppercase;
+ font-size:11px;
+ color:var(--accent-red);
+}
+
+.contact-email-line,
+.contact-location-line{
+ margin:6px 0;
+ font-size:13px;
+ color:var(--ink-light);
+}
+
+.contact-email-line a{
+ color:var(--ink);
+ text-decoration:none;
+ border-bottom:1px solid var(--rule-light);
+}
+
+.contact-email-line a:hover{
+ border-bottom-color:var(--accent-red);
+}
+
+/* V81: move Languages into the empty Skills & Languages box */
+.languages-line-block{
+ display:none !important;
+}
+
+.skills-language-box{
+ border:1px solid var(--rule-light);
+ background:var(--cream-dark);
+ padding:28px 24px;
+ min-height:260px;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ font-style:normal !important;
+}
+
+.skills-language-box h3{
+ margin:0 0 14px;
+ font-family:'Playfair Display', serif;
+ font-size:22px;
+ color:var(--ink);
+ font-style:normal !important;
+}
+
+.skills-language-box p{
+ margin:0;
+ font-size:16px;
+ line-height:1.8;
+ color:var(--ink-light);
+ font-style:normal !important;
+}
+
+/* V82: final override — educator/researcher/ethics statement must be plain, not italic */
+#why-hire-me blockquote,
+#why-hire-me blockquote *,
+#why-hire-me .pull-quote,
+#why-hire-me .pull-quote *,
+#why-hire-me .quote,
+#why-hire-me .quote *,
+#why-hire-me p,
+#why-hire-me p *,
+#why-hire-me em,
+#why-hire-me i{
+ font-style: normal !important;
+}
+
+/* V83: profile-box tagline — catchy, polished and readable */
+#about .profile-role{
+ white-space: normal !important;
+ font-family:'Playfair Display', serif;
+ font-size: clamp(17px, 1.65vw, 23px);
+ line-height:1.35;
+ font-weight:700;
+ color:var(--ink);
+ margin:10px 0 16px;
+ padding:12px 0 0;
+ border-top:1px solid var(--rule-light);
+ font-style:normal !important;
+}
+
+/* V84: make Get in Touch less repetitive; footer keeps formal contact details */
+.contact-invitation-card{
+ border:1px solid var(--rule-light);
+ background:var(--cream);
+ padding:34px 36px;
+ margin:0 0 28px;
+ font-style:normal !important;
+}
+
+.contact-invitation-card h3{
+ margin:0 0 14px;
+ font-family:'Playfair Display', serif;
+ font-size:34px;
+ line-height:1.1;
+ color:var(--ink);
+ font-style:normal !important;
+}
+
+.contact-invitation-card p{
+ max-width:850px;
+ margin:0 0 20px;
+ font-size:17px;
+ line-height:1.75;
+ color:var(--ink-light);
+ font-style:normal !important;
+}
+
+.contact-invitation-link{
+ display:inline-block;
+ font-size:11px;
+ letter-spacing:2px;
+ text-transform:uppercase;
+ color:var(--accent-red);
+ text-decoration:none;
+ border-bottom:1px solid var(--accent-red);
+ padding-bottom:3px;
+ font-style:normal !important;
+}
+
+.contact-invitation-link:hover{
+ color:var(--ink);
+ border-bottom-color:var(--ink);
+}
+
+/* V86: final plain styling for ✦ educator/researcher/ethics statement */
+#why-hire-me,
+#why-hire-me *,
+#why-hire-me em,
+#why-hire-me i,
+#why-hire-me blockquote,
+#why-hire-me blockquote *,
+#why-hire-me .pull-quote,
+#why-hire-me .pull-quote *,
+#why-hire-me .quote,
+#why-hire-me .quote *,
+#why-hire-me p,
+#why-hire-me p *{
+ font-style: normal !important;
+}
+
+/* V87: absolute final fix — this statement must be normal, not italic */
+.normal-ethics-statement,
+.normal-ethics-statement *,
+#why-hire-me .normal-ethics-statement,
+#why-hire-me .normal-ethics-statement *,
+section .normal-ethics-statement,
+section .normal-ethics-statement *{
+ font-style: normal !important;
+ font-family: inherit !important;
+}
+
+.normal-ethics-statement em,
+.normal-ethics-statement i{
+ font-style: normal !important;
+}
+
+/* V88: DAK profile statement panel for the blank About area */
+#about .about-grid{
+ align-items:stretch;
+}
+
+.dak-profile-panel{
+ border:1px solid var(--rule-light);
+ background:var(--cream);
+ padding:34px 38px;
+ min-height:340px;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+ font-style:normal !important;
+}
+
+.dak-mark{
+ font-family:'Playfair Display', serif;
+ font-size:clamp(54px, 6vw, 96px);
+ line-height:.9;
+ letter-spacing:4px;
+ color:var(--ink);
+ margin-bottom:16px;
+ font-weight:800;
+ font-style:normal !important;
+}
+
+.dak-line{
+ font-family:'Playfair Display', serif;
+ font-size:clamp(22px, 2.2vw, 34px);
+ line-height:1.15;
+ color:var(--accent-red);
+ margin-bottom:18px;
+ font-weight:700;
+ font-style:normal !important;
+}
+
+.dak-profile-panel p{
+ margin:0 0 20px;
+ max-width:760px;
+ font-size:15px;
+ line-height:1.75;
+ color:var(--ink-light);
+ font-style:normal !important;
+}
+
+.dak-focus{
+ border-top:1px solid var(--rule-light);
+ padding-top:14px;
+ font-size:10px;
+ line-height:1.8;
+ letter-spacing:1.8px;
+ text-transform:uppercase;
+ color:var(--ink);
+ font-style:normal !important;
+}
+
+@media (max-width:900px){
+ .dak-profile-panel{
+  min-height:auto;
+  padding:28px 24px;
+ }
+}
+
+/* V89: smaller DAK mark and acrostic wording */
+.dak-mark{
+ font-size:clamp(34px, 3.6vw, 56px) !important;
+ letter-spacing:3px !important;
+ margin-bottom:18px !important;
+}
+
+.dak-acrostic{
+ margin-bottom:18px;
+ font-family:'Playfair Display', serif;
+ font-size:clamp(20px, 2vw, 30px);
+ line-height:1.35;
+ color:var(--accent-red);
+ font-style:normal !important;
+}
+
+.dak-acrostic div,
+.dak-acrostic strong{
+ font-style:normal !important;
+}
+
+.dak-acrostic strong{
+ color:var(--ink);
+ font-weight:800;
+}
+
+/* V90: move DAK/acrostic into the right empty box and reduce scale */
+#about .about-grid{
+ align-items:stretch;
+}
+
+.dak-main-panel{
+ min-height:340px;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+}
+
+.dak-main-panel p{
+ margin:0 0 20px;
+ max-width:760px;
+ font-size:15px;
+ line-height:1.75;
+ color:var(--ink-light);
+ font-style:normal !important;
+}
+
+.dak-side-box{
+ border:1px solid var(--rule-light);
+ background:var(--sand);
+ min-height:340px;
+ padding:26px 24px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+}
+
+.dak-side-inner{
+ width:100%;
+ max-width:290px;
+}
+
+.dak-side-box .dak-mark{
+ font-size:clamp(28px, 2.5vw, 42px) !important;
+ letter-spacing:2px !important;
+ margin-bottom:14px !important;
+ line-height:1 !important;
+}
+
+.dak-side-box .dak-acrostic{
+ font-size:clamp(14px, 1.2vw, 18px) !important;
+ line-height:1.55 !important;
+ margin-bottom:0 !important;
+}
+
+.dak-side-box .dak-acrostic div{
+ margin-bottom:8px;
+}
+
+.dak-side-box .dak-acrostic strong{
+ font-weight:800;
+}
+
+@media (max-width: 1100px){
+ .dak-side-box{
+  min-height:auto;
+ }
+}
+
+
+/* V95: tighten spacing between footer email and location */
+.footer-email-line,
+.contact-email-line{
+  margin: 4px 0 2px !important;
+  padding-bottom: 0 !important;
+  line-height: 1.35 !important;
+}
+
+.footer-location-line,
+.contact-location-line{
+  margin: 2px 0 0 !important;
+  padding-top: 0 !important;
+  line-height: 1.35 !important;
+}
+
+.footer-email-line + .footer-location-line,
+.contact-email-line + .contact-location-line{
+  margin-top: 0 !important;
+}
+
+.footer-identity,
+.footer-contact,
+.contact-identity-card,
+footer,
+footer .container{
+  row-gap: 0 !important;
+}
+
+
+/* V99: corrected footer restoration — content stays inside black box; top Get in Touch stays untouched */
+.footer-panel{
+  background: var(--ink) !important;
+  color: var(--cream) !important;
+  margin: 0 -20px -40px !important;
+  padding: 36px 20px 42px !important;
+  text-align: center !important;
+}
+
+.footer-panel .footer-title{
+  font-family:'Playfair Display', serif !important;
+  font-size: 34px !important;
+  font-weight: 900 !important;
+  line-height: 1.1 !important;
+  color: var(--cream) !important;
+  margin: 0 0 8px !important;
+  text-transform: none !important;
+}
+
+.footer-panel .footer-subtitle{
+  color: rgba(245,240,232,.76) !important;
+  margin: 0 0 10px !important;
+  font-size: 11px !important;
+  line-height: 1.45 !important;
+  letter-spacing: 1.7px !important;
+  text-transform: none !important;
+}
+
+.footer-panel .compact-footer-contacts{
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 2px !important;
+  margin: 0 !important;
+  color: rgba(245,240,232,.86) !important;
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+}
+
+.footer-panel .compact-footer-contacts span{
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.footer-panel .footer-copy{
+  color: rgba(245,240,232,.38) !important;
+  font-size: 10px !important;
+  letter-spacing: 1px !important;
+  margin-top: 18px !important;
+}
+
+
+/* V100: make the top Dilara Afroz Khan title smaller */
+.masthead-name{
+  font-size: clamp(32px, 5vw, 58px) !important;
+  line-height: 1.05 !important;
+  letter-spacing: .5px !important;
+}
+
+@media (max-width: 700px){
+  .masthead-name{
+    font-size: clamp(28px, 9vw, 42px) !important;
+  }
+}
+
+/* If the visible top name is in the contact/footer area, keep that smaller too */
+.footer-panel .footer-title{
+  font-size: 26px !important;
+  line-height: 1.15 !important;
+}
+
+
+/* V101: make top name and top purpose line even smaller */
+.masthead-name{
+  font-size: clamp(24px, 3.8vw, 42px) !important;
+  line-height: 1.05 !important;
+  letter-spacing: .2px !important;
+}
+
+.masthead-tagline,
+.profile-box h2,
+.hero-purpose,
+.hero-subtitle{
+  font-size: clamp(18px, 2.2vw, 30px) !important;
+  line-height: 1.15 !important;
+  letter-spacing: .2px !important;
+}
+
+@media (max-width: 700px){
+  .masthead-name{
+    font-size: clamp(22px, 7vw, 34px) !important;
+  }
+
+  .masthead-tagline,
+  .profile-box h2,
+  .hero-purpose,
+  .hero-subtitle{
+    font-size: clamp(17px, 5vw, 24px) !important;
+  }
+}
